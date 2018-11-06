@@ -11,6 +11,6 @@ public class ChecksTest {
 
     @Test
     public void testException() {
-        Checks.isNotNull(null);
+        Checks.data("abcde").isNotNull(null, "kkw");
     }
 }

@@ -1,6 +1,7 @@
 package com.uioqv.base.exception;
 
 import com.google.gson.Gson;
+import com.uioqv.base.entity.Log;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -11,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 public class BaseException extends RuntimeException {
     public static final String DEFAULT_MESSAGE = "系统错误";
 
-    private final Log logger = new Log();
+    private final Log<BaseException> logger;
 
     public BaseException(Throwable cause) {
         this(DEFAULT_MESSAGE, cause);
@@ -27,41 +28,14 @@ public class BaseException extends RuntimeException {
 
     public BaseException(String message, Throwable cause) {
         super(message, cause);
+        logger = new Log<>(this)
+                .message(this.getMessage());
     }
 
-    public Log logger() {
+    public Log<BaseException> logger() {
         return logger;
     }
 
-    public class Log {
-
-        private String unique;
-        private Object data;
-
-        public Log unique(String unique) {
-            this.unique = unique;
-            return this;
-        }
-
-        public Log data(Object data) {
-            this.data = data;
-            return this;
-        }
-
-        public BaseException log() {
-            String error = "Exception message:{}";
-            if(unique != null) {
-                error.concat(", id:{}");
-            }
-            String json = null;
-            if(data != null) {
-                error.concat(", data:{}");
-                json = new Gson().toJson(data);
-            }
-            log.error(error, getMessage(), unique, json);
-            return BaseException.this;
-        }
-    }
 
 
 
