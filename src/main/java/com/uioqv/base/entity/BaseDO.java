@@ -19,5 +19,5 @@ public class BaseDO {
     private String  creator;
     private Date    dateUpdate;
     private String  updater;
-    private Integer isDelete = 0;
+    private Integer isDelete;
 }
